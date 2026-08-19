@@ -37,6 +37,12 @@ void dpr_preexisting_drop(size_t index);
  */
 int dpr_preexisting_flush(void);
 
+/** @brief Get the depth of the transfer queue.
+ *
+ * @return Maximum number of transfers that the queue can hold.
+ */
+size_t dpr_preexisting_depth(void);
+
 #ifdef __cplusplus
 }
 #endif

@@ -111,6 +111,11 @@ def main():
     parser.add_argument("--actual", required=True, type=Path)
     parser.add_argument("--base", default="main", help="revision the pull request is based on")
     parser.add_argument("--repo-root", type=Path, default=Path.cwd())
+    parser.add_argument(
+        "--merged-baseline",
+        action="store_true",
+        help="the baseline pull request is already merged into the base revision",
+    )
     args = parser.parse_args()
 
     expected = json.loads(args.expected.read_text())
@@ -118,9 +123,14 @@ def main():
 
     failures = []
     gaps = []
+    skipped = []
     passed = 0
 
     for case in expected.get("cases", []):
+        if case.get("requires_merged_baseline") and not args.merged_baseline:
+            skipped.append(f"{case['id']}: needs the baseline merged into {args.base}")
+            continue
+
         line = resolve_anchor(args.repo_root, case["file"], case["anchor"])
         hits = [f for f in findings if matches(f, case, line)]
         label = f"{case['id']} ({case['file']}:{line})"
@@ -169,11 +179,16 @@ def main():
             if count > 1:
                 failures.append(f"duplicated findings for {key}: {count} entries")
 
+    for skip in skipped:
+        print(f"SKIP {skip}")
     for gap in gaps:
         print(f"GAP  {gap}")
     for failure in failures:
         print(f"FAIL {failure}")
-    print(f"\n{passed} passed, {len(failures)} failed, {len(gaps)} known gaps")
+    print(
+        f"\n{passed} passed, {len(failures)} failed, {len(gaps)} known gaps, "
+        f"{len(skipped)} skipped"
+    )
 
     return 1 if failures else 0
 

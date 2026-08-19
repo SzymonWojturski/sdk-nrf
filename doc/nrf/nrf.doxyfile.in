@@ -970,6 +970,7 @@ INPUT                  = @DOCSET_SOURCE_BASE@/applications \
                          @DOCSET_SOURCE_BASE@/subsys/nrf_security/src/drivers/cracen/common/include \
                          @DOCSET_SOURCE_BASE@/subsys/trusted_storage/include/psa \
                          @NRF_BASE@/tests/doxygen_pr_reviewer/include \
+                         @NRF_BASE@/tests/doxygen_pr_reviewer/api \
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses

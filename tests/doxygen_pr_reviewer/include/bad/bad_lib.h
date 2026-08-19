@@ -57,7 +57,7 @@ size_t dpr_mutable_window_normalize(const struct dpr_mutable_config *config);
  */
 int dpr_mutable_payload_get(uint8_t *payload, size_t len);
 
-/** @brief Erase the transport state.
+/** Erase the transport state.
  *
  * @details The call drops the pending payload and restores the default configuration.
  */
