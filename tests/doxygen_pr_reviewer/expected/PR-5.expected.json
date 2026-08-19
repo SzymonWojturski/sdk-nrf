@@ -1,0 +1,95 @@
+{
+  "pull_request": 5,
+  "title": "fallback and parser failure",
+  "requires_merged_baseline": false,
+  "note": "Run three times. The fallback of the structural and the syntactic branch only runs when parsing fails, so every fixture here defeats the parser on purpose. Two cases share one anchor because they describe two properties of the same reported line.",
+  "runs": 3,
+  "cases": [
+    {
+      "id": "fb-unbalanced-block",
+      "row": "a block with unbalanced /** */",
+      "file": "tests/doxygen_pr_reviewer/include/bad/fallback/unbalanced_block.h",
+      "anchor": "@returns 0 on success",
+      "expect_finding": true,
+      "branch": "syntactic",
+      "message_contains": [
+        "@return"
+      ],
+      "must_not_report": [
+        {
+          "message_contains": [
+            "compile"
+          ]
+        }
+      ],
+      "known_gap": false,
+      "note": "The parser fails on the file, so the syntactic fallback takes over. It may comment on the rule, but no finding is allowed to claim that the code does not compile."
+    },
+    {
+      "id": "fb-macro-in-signature",
+      "row": "a macro in the parameter list, so the signature cannot be parsed",
+      "file": "tests/doxygen_pr_reviewer/include/bad/fallback/macro_signature.h",
+      "anchor": "int dpr_fallback_send(DPR_FALLBACK_ARGS(const uint8_t *buffer, size_t len));",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The documentation of the function is complete. The uncertainty of the parser must not be published as a finding."
+    },
+    {
+      "id": "fb-llm-does-not-repeat-deterministic",
+      "row": "a deterministic finding that is correct for the line is not repeated by the llm",
+      "file": "tests/doxygen_pr_reviewer/include/bad/fallback/unbalanced_block.h",
+      "anchor": "@returns 0 on success",
+      "expect_finding": true,
+      "branch": "syntactic",
+      "message_contains": [
+        "@return"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "Exactly one entry for the line. The deduplicated assertion is what proves it, because the deterministic rule and the fallback both look at this line."
+    },
+    {
+      "id": "fb-llm-corrects-deterministic",
+      "row": "a deterministic finding that is inaccurate for the line is replaced by the corrected version",
+      "file": "tests/doxygen_pr_reviewer/include/bad/fallback/unbalanced_block.h",
+      "anchor": "@returns 0 on success",
+      "expect_finding": true,
+      "branch": "syntactic",
+      "message_contains": [
+        "@return"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "Same line as fb-llm-does-not-repeat-deterministic. The surviving entry has to be the accurate one, which needs a manual look at the report."
+    },
+    {
+      "id": "fb-two-defects-one-line",
+      "row": "two defects on the same line, one of them already reported",
+      "file": "tests/doxygen_pr_reviewer/include/bad/fallback/merged_line.h",
+      "anchor": "@param buffer buffer",
+      "expect_finding": true,
+      "message_contains": [
+        "@param"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The line has no direction qualifier, no real description and no period. The report has to hold a single merged comment for it."
+    }
+  ],
+  "assertions": {
+    "no_findings_outside_edited_ranges": true,
+    "zero_finding_paths": [
+      "tests/doxygen_pr_reviewer/include/good",
+      "tests/doxygen_pr_reviewer/include/bad/fallback/macro_signature.h"
+    ],
+    "deduplicated": true,
+    "forbidden_phrases": [
+      "does not compile",
+      "will not compile",
+      "fails to compile",
+      "compilation error",
+      "parser_failure"
+    ]
+  }
+}

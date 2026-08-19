@@ -171,6 +171,14 @@ def main():
         if stray:
             failures.append(f"{prefix} must stay free of findings, got {stray}")
 
+    for phrase in assertions.get("forbidden_phrases", []):
+        for finding in findings:
+            if phrase.lower() in finding["message"].lower():
+                failures.append(
+                    f"forbidden phrase {phrase!r} in {finding['file']}:{finding['line']}: "
+                    f"{finding['message'][:120]}"
+                )
+
     if assertions.get("deduplicated"):
         seen = defaultdict(int)
         for finding in findings:

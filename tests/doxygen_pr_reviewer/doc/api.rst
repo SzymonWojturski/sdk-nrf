@@ -95,3 +95,10 @@ Semantic fixtures
 | Source file: :file:`tests/doxygen_pr_reviewer/src/semantic_lib.c`
 
 .. doxygengroup:: dpr_semantic
+
+Fallback fixtures
+*****************
+
+| Header file: :file:`tests/doxygen_pr_reviewer/include/bad/fallback/unbalanced_block.h`
+
+.. doxygengroup:: dpr_fallback
