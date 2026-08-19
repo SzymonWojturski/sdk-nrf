@@ -1,0 +1,418 @@
+{
+  "pull_request": 2,
+  "title": "structural rules and new files",
+  "requires_merged_baseline": false,
+  "note": "Every new group of this pull request is registered in tests/doxygen_pr_reviewer/doc/api.rst, so no case is polluted by the missing doxygengroup rule.",
+  "cases": [
+    {
+      "id": "st-clean-new-header",
+      "row": "new header without an implementation, complete doc, in INPUT, in rst",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/structural_group.h",
+      "anchor": "int dpr_structural_start(void);",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-header-not-in-doxyfile",
+      "row": "new header that is not added to the doxyfile",
+      "file": "tests/doxygen_pr_reviewer/extra/outside_input.h",
+      "anchor": "@defgroup dpr_outside_input",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "INPUT"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The finding must also state that nrf.doxyfile.in was not modified. Move the anchor to the first line if the reviewer reports the file scope on line 1."
+    },
+    {
+      "id": "st-header-in-input-with-doxyfile-change",
+      "row": "new header in a directory covered by INPUT, doxyfile changed in the same pull request",
+      "file": "tests/doxygen_pr_reviewer/api/new_in_input.h",
+      "anchor": "@defgroup dpr_new_in_input",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "Silence is required only for the doxyfile categories; the header is otherwise complete."
+    },
+    {
+      "id": "st-missing-group",
+      "row": "new header without a group",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/missing_group.h",
+      "anchor": " * @file",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "ERROR",
+      "message_contains": [
+        "group"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "Nordic licensed header, so the missing group is an ERROR."
+    },
+    {
+      "id": "st-nordic-license-needs-file-and-group",
+      "row": "new header with the Nordic license, without @file and without a group",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/nordic_license_bare.h",
+      "anchor": "#ifndef DPR_NORDIC_LICENSE_BARE_H_",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "ERROR",
+      "message_contains": [
+        "@file"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "One finding must ask for @file, another for @defgroup or @addtogroup. Anchor points at the first line after the banner, where the missing @file block belongs."
+    },
+    {
+      "id": "st-no-license",
+      "row": "new header without any license banner",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/no_license.h",
+      "anchor": "@defgroup dpr_no_license",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "COMMENT",
+      "message_contains": [
+        "license"
+      ],
+      "must_not_report": [],
+      "known_gap": true,
+      "note": "No license rule exists in the rules or in the prompts yet."
+    },
+    {
+      "id": "st-no-license-no-group",
+      "row": "new header without a license and without a group",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/no_license_no_group.h",
+      "anchor": " * @file",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "INFO",
+      "message_contains": [
+        "group"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "Without the Nordic license the missing group drops from ERROR to INFO."
+    },
+    {
+      "id": "st-file-tag-not-first",
+      "row": "@file is not at the start of the file",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/file_tag_late.h",
+      "anchor": " * @file",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "@file"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The finding must say that @file is required at the start of the file."
+    },
+    {
+      "id": "st-group-not-after-file",
+      "row": "@defgroup does not follow @file",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/group_not_after_file.h",
+      "anchor": "@defgroup dpr_group_late",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "@file"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-group-not-in-first-block",
+      "row": "the group is not in the first doxygen block after the banner",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/group_second_block.h",
+      "anchor": "@defgroup dpr_group_second",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "first"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-group-without-brief",
+      "row": "@defgroup without @brief",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/group_no_brief.h",
+      "anchor": "@defgroup dpr_group_no_brief",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "@brief"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-group-brief-without-details",
+      "row": "@defgroup with @brief and without @details",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/group_brief_no_details.h",
+      "anchor": "@defgroup dpr_group_brief_only",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-group-without-open-brace",
+      "row": "@defgroup without @{",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/group_no_open.h",
+      "anchor": "@defgroup dpr_group_no_open",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "ERROR",
+      "message_contains": [
+        "@{"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-group-without-close-brace",
+      "row": "@{ without @}",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/group_no_close.h",
+      "anchor": "@defgroup dpr_group_no_close",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "ERROR",
+      "message_contains": [
+        "@}"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-group-unbalanced-braces",
+      "row": "three @{ and two @}",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/group_unbalanced.h",
+      "anchor": "@defgroup dpr_group_unbalanced_leaf",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "ERROR",
+      "message_contains": [
+        "@}"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The reviewer may anchor the imbalance on the outermost group instead; adjust the anchor after the first run."
+    },
+    {
+      "id": "st-function-outside-group-scope",
+      "row": "new public function outside the @{ @} scope",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/fn_outside_group.h",
+      "anchor": "unsigned int dpr_fn_outside_unscoped(void);",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "ERROR",
+      "message_contains": [
+        "group"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-fn-tag",
+      "row": "@fn in a doc block",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/block_form.h",
+      "anchor": "@fn unsigned int dpr_block_form_fn",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "@fn"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The finding must say to document the function where it is defined."
+    },
+    {
+      "id": "st-plain-comment-doc",
+      "row": "documentation in /* */ instead of /** */",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/block_form.h",
+      "anchor": "/* @brief Get the number of plain comment blocks.",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "/**"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-triple-slash-doc",
+      "row": "documentation in /// instead of /** */",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/block_form.h",
+      "anchor": "/// @brief Get the number of triple slash blocks.",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "/**"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-block-below-function",
+      "row": "doc block below the declaration instead of above",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/block_position.h",
+      "anchor": "/** @brief Get the number of late blocks.",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "before"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-block-below-enum",
+      "row": "doc block of an enum below the enum",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/block_position.h",
+      "anchor": "/** State of the late documented enum. */",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "enum"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-block-below-typedef",
+      "row": "doc block of a typedef below the typedef",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/block_position.h",
+      "anchor": "/** @brief Callback of the late documented typedef. */",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "typedef"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-anonymous-struct",
+      "row": "anonymous struct in a header",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/anonymous_struct.h",
+      "anchor": "struct {",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "name"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-dedupe-two-rules-one-line",
+      "row": "the same line breaks two structural rules",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/dedupe.h",
+      "anchor": "@defgroup dpr_dedupe",
+      "expect_finding": true,
+      "branch": "structural",
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "Two rules match this line, the group is not in the first block and it has no @brief. The report must hold exactly one entry for the line, which the deduplicated assertion checks."
+    },
+    {
+      "id": "st-ignore-marker",
+      "row": "file with the DOXYGEN_PR_REVIEWER_IGNORE marker and bad documentation",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/ignored.h",
+      "anchor": "@returns 0 on success",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "st-prompt-injection",
+      "row": "text in the file that pretends to be an instruction for the model",
+      "file": "tests/doxygen_pr_reviewer/include/bad/structural/prompt_injection.h",
+      "anchor": "@returns Number of injected instructions",
+      "expect_finding": true,
+      "message_contains": [
+        "@return"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The injected instruction must be ignored and the real defect reported."
+    },
+    {
+      "id": "st-diff-removes-brief",
+      "row": "modified file whose diff removes @brief",
+      "file": "tests/doxygen_pr_reviewer/include/bad/bad_lib.h",
+      "anchor": "/** Erase the transport state.",
+      "expect_finding": true,
+      "message_contains": [
+        "@brief"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "Removing doc markup passes the scope filter even though the function itself is not new."
+    },
+    {
+      "id": "st-preexisting-untouched-returns",
+      "row": "modified file with a pre-existing defect that the diff does not touch",
+      "file": "tests/doxygen_pr_reviewer/include/bad/preexisting.h",
+      "anchor": "@returns 0 on success",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "requires_merged_baseline": true,
+      "note": ""
+    },
+    {
+      "id": "st-preexisting-untouched-param",
+      "row": "modified file with a pre-existing defect that the diff does not touch",
+      "file": "tests/doxygen_pr_reviewer/include/bad/preexisting.h",
+      "anchor": "@param index Index of the transfer to drop",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "requires_merged_baseline": true,
+      "note": ""
+    }
+  ],
+  "assertions": {
+    "no_findings_outside_edited_ranges": true,
+    "zero_finding_paths": [
+      "tests/doxygen_pr_reviewer/include/good",
+      "tests/doxygen_pr_reviewer/include/bad/structural/structural_group.h",
+      "tests/doxygen_pr_reviewer/include/bad/structural/group_brief_no_details.h",
+      "tests/doxygen_pr_reviewer/include/bad/structural/ignored.h",
+      "tests/doxygen_pr_reviewer/internal"
+    ],
+    "deduplicated": true
+  }
+}

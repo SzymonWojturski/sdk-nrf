@@ -1,0 +1,121 @@
+{
+  "pull_request": 1,
+  "title": "baseline: good, bad, doxyfile, rst, src",
+  "requires_merged_baseline": false,
+  "note": "The baseline is meant to be merged first. Everything except include/bad/preexisting.h must be silent; the defects in that file exist so that a later pull request can prove pre-existing filtering.",
+  "cases": [
+    {
+      "id": "pr1-model-silent",
+      "row": "reference header that follows the style guide example",
+      "file": "tests/doxygen_pr_reviewer/include/good/model_lib.h",
+      "anchor": "int dpr_model_sensor_read(uint8_t *sample, size_t len, size_t *olen);",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "pr1-types-two-groups-silent",
+      "row": "one file split into two groups, each with @{ and @}",
+      "file": "tests/doxygen_pr_reviewer/include/good/good_types.h",
+      "anchor": "@defgroup dpr_types_util Doxygen reviewer type utilities",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "pr1-types-struct-no-brief-silent",
+      "row": "struct without @brief but with a short prose description",
+      "file": "tests/doxygen_pr_reviewer/include/good/good_types.h",
+      "anchor": "/** Report of the entries collected during one sampling window. */",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "pr1-types-enum-inline-silent",
+      "row": "enum element documented inline with /**< ... */",
+      "file": "tests/doxygen_pr_reviewer/include/good/good_types.h",
+      "anchor": "DPR_TYPES_TRANSPORT_UART,",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "pr1-internal-out-of-scope",
+      "row": "header outside INPUT and without a group is not public API",
+      "file": "tests/doxygen_pr_reviewer/internal/internal_lib.h",
+      "anchor": "size_t dpr_internal_floor_pow2(size_t value);",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "pr1-preexisting-missing-direction",
+      "row": "@param without a direction qualifier",
+      "file": "tests/doxygen_pr_reviewer/include/bad/preexisting.h",
+      "anchor": "@param index Index of the transfer to drop",
+      "expect_finding": true,
+      "branch": "syntactic",
+      "severity": "WARNING",
+      "message_contains": ["[in]"],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The same line also misses the closing period, which is a COMMENT and may be merged into one comment for the line."
+    },
+    {
+      "id": "pr1-preexisting-returns-tag",
+      "row": "@returns instead of @return",
+      "file": "tests/doxygen_pr_reviewer/include/bad/preexisting.h",
+      "anchor": "@returns 0 on success",
+      "expect_finding": true,
+      "branch": "syntactic",
+      "severity": "WARNING",
+      "message_contains": ["@return"],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "pr1-preexisting-missing-return",
+      "row": "non-void function without @return and without @retval",
+      "file": "tests/doxygen_pr_reviewer/include/bad/preexisting.h",
+      "anchor": "size_t dpr_preexisting_queued(void);",
+      "expect_finding": true,
+      "branch": "syntactic",
+      "severity": "WARNING",
+      "message_contains": ["@ret"],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "Anchored on the declaration. Move the anchor to the doc block if the reviewer reports the missing return tag on the comment instead."
+    },
+    {
+      "id": "pr1-preexisting-brief-third-person",
+      "row": "@brief in the third person instead of the imperative form",
+      "file": "tests/doxygen_pr_reviewer/include/bad/preexisting.h",
+      "anchor": "@brief Returns the number of queued transfers.",
+      "expect_finding": true,
+      "branch": "syntactic",
+      "severity": "COMMENT",
+      "message_contains": ["imperative"],
+      "must_not_report": [],
+      "known_gap": true,
+      "note": "The style guide requires the imperative form, but neither the rules nor the prompts implement it yet."
+    }
+  ],
+  "assertions": {
+    "no_findings_outside_edited_ranges": true,
+    "zero_finding_paths": [
+      "tests/doxygen_pr_reviewer/include/good",
+      "tests/doxygen_pr_reviewer/include/bad/bad_lib.h",
+      "tests/doxygen_pr_reviewer/include/excluded",
+      "tests/doxygen_pr_reviewer/internal",
+      "tests/doxygen_pr_reviewer/src"
+    ],
+    "deduplicated": true
+  }
+}

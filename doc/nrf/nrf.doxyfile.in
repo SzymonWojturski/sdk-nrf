@@ -969,6 +969,8 @@ INPUT                  = @DOCSET_SOURCE_BASE@/applications \
                          @DOCSET_SOURCE_BASE@/subsys/nrf_security/src/drivers/cracen/cracen_sw/include \
                          @DOCSET_SOURCE_BASE@/subsys/nrf_security/src/drivers/cracen/common/include \
                          @DOCSET_SOURCE_BASE@/subsys/trusted_storage/include/psa \
+                         @NRF_BASE@/tests/doxygen_pr_reviewer/include \
+                         @NRF_BASE@/tests/doxygen_pr_reviewer/api \
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1024,7 +1026,8 @@ RECURSIVE              = YES
 # run.
 
 EXCLUDE                = @DOCSET_SOURCE_BASE@/applications/connectivity_bridge/src/events/module_state_event.h \
-                         @DOCSET_SOURCE_BASE@/applications/matter_weather_station/src
+                         @DOCSET_SOURCE_BASE@/applications/matter_weather_station/src \
+                         @NRF_BASE@/tests/doxygen_pr_reviewer/include/excluded
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
