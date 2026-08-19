@@ -1,0 +1,429 @@
+{
+  "pull_request": 4,
+  "title": "semantic branch",
+  "requires_merged_baseline": false,
+  "note": "Run three times. Rows that do not reproduce in all three runs are unstable and feed back into the prompts instead of into the expectations.",
+  "runs": 3,
+  "cases": [
+    {
+      "id": "se-direction-changed-in-c-header-edited",
+      "row": "the C code changes the direction from in to inout and the @param line is edited",
+      "file": "tests/doxygen_pr_reviewer/include/bad/bad_lib.h",
+      "anchor": "@param[in] config Configuration to apply to the transport.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "in,out"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "dpr_mutable_configure now clamps the window in place, so the parameter is read and written."
+    },
+    {
+      "id": "se-direction-changed-in-c-header-untouched",
+      "row": "the C code changes the direction and the header is not touched",
+      "file": "tests/doxygen_pr_reviewer/include/bad/bad_lib.h",
+      "anchor": "@param[out] payload Buffer that receives the payload.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "in,out"
+      ],
+      "must_not_report": [],
+      "known_gap": true,
+      "requires_merged_baseline": true,
+      "note": "dpr_mutable_payload_get now merges into the caller buffer. Changing only the .c file does not unlock a comment on an untouched doc block in the .h file today."
+    },
+    {
+      "id": "se-write-only-marked-in",
+      "row": "a parameter that is only written is documented as @param[in]",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/directions.h",
+      "anchor": "@param[in] stats Statistics to fill.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "[out]"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-read-write-marked-out",
+      "row": "a parameter that is read and written is documented as @param[out]",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/directions.h",
+      "anchor": "@param[out] stats Statistics to read the previous totals from and to update.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "in,out"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-doc-comment-for-the-programmer",
+      "row": "a /** */ comment in the C file aimed at the programmer",
+      "file": "tests/doxygen_pr_reviewer/src/semantic_comments.c",
+      "anchor": "/** The loop below is unrolled by hand",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "COMMENT",
+      "message_contains": [
+        "/*"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "Exactly one finding, proposing a plain /* */ comment."
+    },
+    {
+      "id": "se-doc-comment-belongs-in-header",
+      "row": "a /** */ documentation comment in the C file",
+      "file": "tests/doxygen_pr_reviewer/src/semantic_comments.c",
+      "anchor": "@brief Arm the return fixture.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "COMMENT",
+      "message_contains": [
+        "header"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "Exactly one finding, proposing to move the block to the header."
+    },
+    {
+      "id": "se-doc-comment-ambiguous",
+      "row": "a comment in the C file with an ambiguous intent",
+      "file": "tests/doxygen_pr_reviewer/src/semantic_comments.c",
+      "anchor": "/** The caller has to arm the fixture first. */",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "COMMENT",
+      "message_contains": [
+        "/*"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The finding has to cover both readings: move it to the header if it documents the API, change it to /* */ if it is a note for the programmer."
+    },
+    {
+      "id": "se-describes-implementation",
+      "row": "the doc describes the internal implementation instead of the observable behaviour",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/behaviour.h",
+      "anchor": "@details The call takes the module mutex, walks the static slot array",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "behaviour"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-contradicts-declaration",
+      "row": "the doc says the function returns void, the declaration returns int",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/behaviour.h",
+      "anchor": "@details The function returns nothing and only clears the internal state.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "ERROR",
+      "message_contains": [
+        "declaration"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-param-description-repeats-name",
+      "row": "the @param description repeats the parameter name and adds nothing",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/behaviour.h",
+      "anchor": "@param[in] id The id.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "mean"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-param-descriptive-fragment",
+      "row": "a parameter description that is a fragment but descriptive",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/behaviour.h",
+      "anchor": "@param[out] id Identifier of the active slot, valid only when the call succeeds.",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-return-holds-specific-value",
+      "row": "@return whose text holds a specific value",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/returns.h",
+      "anchor": "@return 0 when the fixture was armed.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "@retval"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-two-return-tags",
+      "row": "two @return tags in one block",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/returns.h",
+      "anchor": "@return Negative error code when the fixture is not armed.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "@return"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-retval-generic-only",
+      "row": "@retval that is only generic, with no specific value",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/returns.h",
+      "anchor": "@retval otherwise A negative error code is returned.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "@retval"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The finding has to carry a Bad and a Good fragment."
+    },
+    {
+      "id": "se-retval-without-condition",
+      "row": "@retval without the condition in which the value is returned",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/returns.h",
+      "anchor": "@retval -EAGAIN",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "condition"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-retval-specific-then-otherwise",
+      "row": "a specific @retval followed by an otherwise sentence",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/returns.h",
+      "anchor": "@retval 0 If every pending request was drained.",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-excess-capitalization",
+      "row": "excess capitalization in a description",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/style.h",
+      "anchor": "@brief Reset the Style Fixture Of The Doxygen Reviewer Testbed.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "capital"
+      ],
+      "must_not_report": [
+        {
+          "severity": "ERROR"
+        }
+      ],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-details-repeat-brief",
+      "row": "the details repeat the content of @brief",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/style.h",
+      "anchor": "@details Suspend the style fixture.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "redundan"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-details-repeat-declaration",
+      "row": "the details repeat what the declaration already shows",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/style.h",
+      "anchor": "@details The function is called dpr_style_resume",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "declaration"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-details-irrelevant-implementation",
+      "row": "the details add implementation detail that is irrelevant for the caller",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/style.h",
+      "anchor": "@details Internally the function iterates the slot array",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "detail"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-details-misleading",
+      "row": "the details introduce information that misleads against the code",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/style.h",
+      "anchor": "@details The call never blocks and it is safe to use from an interrupt handler.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "ERROR",
+      "message_contains": [
+        "code"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "dpr_style_purge blocks the caller in semantic_lib.c."
+    },
+    {
+      "id": "se-note-outside-details",
+      "row": "@note outside @details",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/style.h",
+      "anchor": "@note The call is irreversible.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "@details"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-injury-without-warning",
+      "row": "API whose use can cause personal injury or loss of life, without @warning",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/warnings.h",
+      "anchor": "@brief Drive the motor of the test rig at full torque.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "@warning"
+      ],
+      "must_not_report": [],
+      "known_gap": true,
+      "note": "The style guide asks for @warning on personal injury, the semantic prompt only talks about bricking the device. The two criteria still have to be reconciled."
+    },
+    {
+      "id": "se-permanent-lock-without-warning",
+      "row": "API that permanently blocks the recovery of the device, without @warning",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/warnings.h",
+      "anchor": "@brief Write the permanent lock bits of the device.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "@warning"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The finding has to carry a Bad and a Good fragment."
+    },
+    {
+      "id": "se-reversible-change-without-warning",
+      "row": "API that changes the configuration reversibly, without @warning",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/warnings.h",
+      "anchor": "@brief Switch the transport of the test rig to the slow profile.",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-unsupported-claims",
+      "row": "the doc states units, side effects or memory ownership that the code does not show",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/evidence.h",
+      "anchor": "@details The value is returned in millidegrees Celsius",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The function has no implementation in the testbed, so the branch must not confirm the claims. Silence is the expected result, not a finding that says they are correct."
+    },
+    {
+      "id": "se-no-evidence-no-speculation",
+      "row": "no implementation and no other evidence of the behaviour",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/evidence.h",
+      "anchor": "@param[in] rounds Number of calibration rounds to run.",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-documentation-in-polish",
+      "row": "documentation written in Polish",
+      "file": "tests/doxygen_pr_reviewer/include/bad/semantic/language.h",
+      "anchor": "@brief Wyzeruj licznik probek fikstury.",
+      "expect_finding": true,
+      "branch": "semantic",
+      "severity": "WARNING",
+      "message_contains": [
+        "English"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "se-defect-on-context-line",
+      "row": "the defect sits only on an unchanged context line",
+      "file": "tests/doxygen_pr_reviewer/include/bad/preexisting.h",
+      "anchor": "@returns 0 on success",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "requires_merged_baseline": true,
+      "note": "The brief of the same block is edited, so the defective line is diff context only."
+    }
+  ],
+  "assertions": {
+    "no_findings_outside_edited_ranges": true,
+    "zero_finding_paths": [
+      "tests/doxygen_pr_reviewer/include/good",
+      "tests/doxygen_pr_reviewer/internal",
+      "tests/doxygen_pr_reviewer/src/semantic_lib.c"
+    ],
+    "deduplicated": true
+  }
+}

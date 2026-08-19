@@ -32,12 +32,12 @@ struct dpr_mutable_config {
 
 /** @brief Configure the mutable transport.
  *
- * @param[in] config Configuration to apply.
+ * @param[in] config Configuration to apply to the transport.
  *
  * @retval 0       If the configuration was applied.
  * @retval -EINVAL If the window size in @p config is zero.
  */
-int dpr_mutable_configure(const struct dpr_mutable_config *config);
+int dpr_mutable_configure(struct dpr_mutable_config *config);
 
 /** @brief Normalize a transport window.
  *

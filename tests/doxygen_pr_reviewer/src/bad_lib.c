@@ -13,11 +13,14 @@ static struct dpr_mutable_config active_config;
 static uint8_t pending_payload[16];
 static size_t pending_len;
 
-int dpr_mutable_configure(const struct dpr_mutable_config *config)
+int dpr_mutable_configure(struct dpr_mutable_config *config)
 {
 	if (config->window == 0) {
 		return -EINVAL;
 	}
+
+	/* The window is clamped in place, so the caller sees the value that was applied. */
+	config->window = dpr_mutable_window_normalize(config);
 
 	active_config = *config;
 
@@ -41,7 +44,9 @@ int dpr_mutable_payload_get(uint8_t *payload, size_t len)
 		return -ENOMEM;
 	}
 
-	memcpy(payload, pending_payload, pending_len);
+	for (size_t i = 0; i < pending_len; i++) {
+		payload[i] ^= pending_payload[i];
+	}
 
 	return 0;
 }

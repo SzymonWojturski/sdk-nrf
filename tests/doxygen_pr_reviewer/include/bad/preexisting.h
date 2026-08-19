@@ -31,7 +31,7 @@ size_t dpr_preexisting_queued(void);
  */
 void dpr_preexisting_drop(size_t index);
 
-/** @brief Flush the transfer queue.
+/** @brief Flush the transfer queue and release its buffers.
  *
  * @returns 0 on success
  */

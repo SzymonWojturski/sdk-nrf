@@ -87,3 +87,11 @@ Syntactic fixtures
 | Header file: :file:`tests/doxygen_pr_reviewer/include/bad/syntactic/brief_forms.h`
 
 .. doxygengroup:: dpr_syntactic
+
+Semantic fixtures
+*****************
+
+| Header file: :file:`tests/doxygen_pr_reviewer/include/bad/semantic/directions.h`
+| Source file: :file:`tests/doxygen_pr_reviewer/src/semantic_lib.c`
+
+.. doxygengroup:: dpr_semantic
