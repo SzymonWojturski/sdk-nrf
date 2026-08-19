@@ -19,4 +19,6 @@
 /* Round the value down to the nearest power of two. */
 size_t dpr_internal_floor_pow2(size_t value);
 
+size_t dpr_internal_slot_count(void);
+
 #endif /* DPR_INTERNAL_LIB_H_ */

@@ -80,3 +80,10 @@ Structural fixtures
 | Header file: :file:`tests/doxygen_pr_reviewer/api/new_in_input.h`
 
 .. doxygengroup:: dpr_new_in_input
+
+Syntactic fixtures
+******************
+
+| Header file: :file:`tests/doxygen_pr_reviewer/include/bad/syntactic/brief_forms.h`
+
+.. doxygengroup:: dpr_syntactic
