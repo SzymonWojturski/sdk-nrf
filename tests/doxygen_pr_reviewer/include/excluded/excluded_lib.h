@@ -24,6 +24,12 @@ extern "C" {
  */
 unsigned int dpr_excluded_build_id(void);
 
+/** @brief Get the revision of the excluded module.
+ *
+ * @returns Revision of the module
+ */
+unsigned int dpr_excluded_revision(void);
+
 #ifdef __cplusplus
 }
 #endif

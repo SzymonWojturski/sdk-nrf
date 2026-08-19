@@ -102,3 +102,10 @@ Fallback fixtures
 | Header file: :file:`tests/doxygen_pr_reviewer/include/bad/fallback/unbalanced_block.h`
 
 .. doxygengroup:: dpr_fallback
+
+Scope fixtures
+**************
+
+| Header file: :file:`tests/doxygen_pr_reviewer/private/with_group.h`
+
+.. doxygengroup:: dpr_private_group

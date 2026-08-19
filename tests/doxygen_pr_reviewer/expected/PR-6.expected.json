@@ -1,0 +1,144 @@
+{
+  "pull_request": 6,
+  "title": "scope, EXCLUDE, private directories and RST markup",
+  "requires_merged_baseline": false,
+  "note": "dpr_unregistered is deliberately absent from every RST page. dpr_private_group is registered in doc/api.rst, so the only finding expected for that file is the @returns tag.",
+  "cases": [
+    {
+      "id": "sp-group-without-doxygengroup",
+      "row": "@defgroup in a header with no .. doxygengroup:: in any RST page",
+      "file": "tests/doxygen_pr_reviewer/include/bad/scope/unregistered_group.h",
+      "anchor": "@defgroup dpr_unregistered",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "WARNING",
+      "message_contains": [
+        "doxygengroup"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "sp-rst-function-in-backticks",
+      "row": "RST with `foo()` in backticks",
+      "file": "tests/doxygen_pr_reviewer/doc/scope.rst",
+      "anchor": "Call `dpr_unregistered_count()` to read the counter",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "COMMENT",
+      "message_contains": [
+        ":c:func:"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "sp-rst-macro-in-backticks",
+      "row": "RST with `CONFIG_X` in backticks",
+      "file": "tests/doxygen_pr_reviewer/doc/scope.rst",
+      "anchor": "`CONFIG_DPR_TESTBED_SCOPE`",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "COMMENT",
+      "message_contains": [
+        ":c:macro:"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "sp-rst-struct-in-backticks",
+      "row": "RST with `struct foo` in backticks",
+      "file": "tests/doxygen_pr_reviewer/doc/scope.rst",
+      "anchor": "`struct dpr_types_report`",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "COMMENT",
+      "message_contains": [
+        ":c:struct:"
+      ],
+      "must_not_report": [],
+      "known_gap": true,
+      "note": "The :c:struct: role is not checked today."
+    },
+    {
+      "id": "sp-rst-type-enum-member-in-backticks",
+      "row": "RST with a type, enum, enumerator or member name in backticks",
+      "file": "tests/doxygen_pr_reviewer/doc/scope.rst",
+      "anchor": "The callback type is `dpr_model_state_handler_t`",
+      "expect_finding": true,
+      "branch": "structural",
+      "severity": "COMMENT",
+      "message_contains": [
+        ":c:type:"
+      ],
+      "must_not_report": [],
+      "known_gap": true,
+      "note": "The :c:type:, :c:enum:, :c:enumerator: and :c:member: roles are not checked today. The line carries one case of each on purpose."
+    },
+    {
+      "id": "sp-excluded-file-with-defect",
+      "row": "a file that EXCLUDE covers, with a defect",
+      "file": "tests/doxygen_pr_reviewer/include/excluded/excluded_lib.h",
+      "anchor": "@returns Revision of the module",
+      "expect_finding": true,
+      "branch": "syntactic",
+      "severity": "WARNING",
+      "message_contains": [
+        "@return"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "target_behaviour": "silence",
+      "note": "EXCLUDE is parsed but not applied to the public API scope today, so the finding is reported. Flip this case to expect_finding false once EXCLUDE is honoured."
+    },
+    {
+      "id": "sp-private-dir-with-group",
+      "row": "a header with an explicit group in a private directory",
+      "file": "tests/doxygen_pr_reviewer/private/with_group.h",
+      "anchor": "@returns Number of private groups",
+      "expect_finding": true,
+      "branch": "syntactic",
+      "severity": "WARNING",
+      "message_contains": [
+        "@return"
+      ],
+      "must_not_report": [],
+      "known_gap": false,
+      "note": "The group pulls the file into the public API even though tests/ is private."
+    },
+    {
+      "id": "sp-private-dir-without-group",
+      "row": "a header without a group in a private directory",
+      "file": "tests/doxygen_pr_reviewer/private/without_group.h",
+      "anchor": "@returns Number of private headers",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    },
+    {
+      "id": "sp-internal-suffix-without-group",
+      "row": "an _internal.h header without a group",
+      "file": "tests/doxygen_pr_reviewer/private/dpr_transport_internal.h",
+      "anchor": "@returns Number of internal transports",
+      "expect_finding": false,
+      "must_not_report": [],
+      "known_gap": false,
+      "note": ""
+    }
+  ],
+  "assertions": {
+    "no_findings_outside_edited_ranges": true,
+    "zero_finding_paths": [
+      "tests/doxygen_pr_reviewer/include/good",
+      "tests/doxygen_pr_reviewer/internal",
+      "tests/doxygen_pr_reviewer/private/without_group.h",
+      "tests/doxygen_pr_reviewer/private/dpr_transport_internal.h"
+    ],
+    "deduplicated": true
+  }
+}
