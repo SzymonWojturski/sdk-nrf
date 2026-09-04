@@ -126,7 +126,7 @@ struct bt_gatt_chrc *bt_gatt_dm_attr_chrc_val(
 
 /** @brief Get the connection object
  *
- * Used by the given discovery manager instance.
+ * This function uses the given discovery manager instance.
  *
  * @param[in] dm Discovery Manager instance.
  *
