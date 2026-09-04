@@ -9,6 +9,9 @@
 
 /**
  * @file
+ */
+
+/**
  * @defgroup bt_gatt_dm GATT Discovery Manager API
  * @{
  * @brief Module for GATT Discovery Manager.
@@ -123,12 +126,12 @@ struct bt_gatt_chrc *bt_gatt_dm_attr_chrc_val(
 
 /** @brief Get the connection object
  *
- * Function returns connection object that is used by given
- * discovery manager instance
+ * The function returns the connection object used by the given discovery
+ * manager instance.
  *
- * @param[in] dm Discovery Manager instance
+ * @param[in] dm Discovery Manager instance.
  *
- * @return Connection object
+ * @return Connection object.
  */
 struct bt_conn *bt_gatt_dm_conn_get(struct bt_gatt_dm *dm);
 
@@ -143,12 +146,15 @@ struct bt_conn *bt_gatt_dm_conn_get(struct bt_gatt_dm *dm);
  */
 size_t bt_gatt_dm_attr_cnt(const struct bt_gatt_dm *dm);
 
-/** @brief Get service value
+/** @brief Returned the service value
+ *
+ * @note The value contains the service UUID and end handle
+ * @note NULL is not a valid return value for this function
  *
  * Function returns the value that contains UUID and attribute
  * end handler of the service found
  *
- * @param[in] dm Discovery Manager instance
+ * @param dm Discovery Manager instance
  *
  * @returns The pointer service value structure
  */
