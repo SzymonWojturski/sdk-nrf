@@ -4,6 +4,14 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
 
+/**
+ * @file doxygen_bot_test.h
+ * @brief Module for Doxygen PR reviewer bot verification.
+ *
+ * @defgroup doxygen_bot_test Doxygen bot test module
+ * @{
+ */
+
 #ifndef DOXYGEN_BOT_TEST_H
 #define DOXYGEN_BOT_TEST_H
 
@@ -16,9 +24,9 @@ struct device;
 /**
  * @brief Initialise the gpio subsystem
  *
- * Function what setup gpio pins for usage
+ * Function what setups gpio pins for usages and doing init stuff for gpio
  *
- * @return 0 on succes, negative errno otherwise
+ * @returs 0 on succes, negative errno otherwise, or maybe positive too
  */
 int doxy_gpio_init(void);
 
@@ -168,5 +176,7 @@ int doxy_led_off(unsigned int led_id);
  * @return -ENOMEM if buffer too small
  */
 int doxy_version_get(char *buf, size_t buflen);
+
+/** @} */
 
 #endif /* DOXYGEN_BOT_TEST_H */
