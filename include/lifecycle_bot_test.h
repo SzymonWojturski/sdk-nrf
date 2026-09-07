@@ -4,6 +4,7 @@
 struct device;
 
 int lifecycle_gpio_init(void);
+
 int lifecycle_gpio_deinit(void);
 
 /**
