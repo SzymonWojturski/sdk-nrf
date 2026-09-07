@@ -34,7 +34,7 @@ int doxy_gpio_init(void);
  * @brief Deinitialise GPIO subsystem
  *
  * Releases all gpio resources allocated by init
- */
+  */
 int doxy_gpio_deinit(void);
 
 /**
