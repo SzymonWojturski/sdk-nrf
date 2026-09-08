@@ -29,9 +29,9 @@
 int doxy_spi_init(void);
 
 /**
- * @brief Perform SPI transceive operation.
+ * \brief Perform SPI transceive operation.
  *
- * @param tx_buf Transmit buffer.
+ * @param [out] tx_buf Transmit buffer.
  * @param [in] rx_buf Receive buffer.
  * @param len Number of bytes to transfer.
  *
@@ -56,7 +56,7 @@ int doxy_spi_release(void);
  * @param [in] frequency_hz Desired bus frequency in hertz.
  *
  * @retval 0 on success.
- * @retval negative errno code on failure.
+ * @retval -ENODEV if SPI bus is not initialized.
  */
 int doxy_spi_configure(uint32_t frequency_hz);
 

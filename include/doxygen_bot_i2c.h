@@ -33,9 +33,9 @@ int doxy_i2c_init(void);
  *
  * Sends data bytes to the specified slav address.
  *
- * @param addr 7-bit I2C slave address.
+ * @param [in] addr 7-bit I2C slave address.
  * @param [in] data Data buffer to write.
- * @param len Number of bytes to write.
+ * @param [in] len Number of bytes to write.
  *
  * @retval 0 on success.
  * @retval negative errno code on failure.

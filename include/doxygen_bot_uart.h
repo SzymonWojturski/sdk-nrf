@@ -52,7 +52,7 @@ int doxy_uart_transmit(const uint8_t *data, size_t len);
 /**
  * @brief Receive data from UART.
  *
- * @param buf Buffer to store received data.
+ * @param [in] buf Buffer to store received data.
  * @param len Maximum number of bytes to receive.
  *
  * @returs Number of bytes received, or negative errno on failure.
