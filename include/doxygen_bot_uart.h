@@ -21,7 +21,7 @@
 /**
  * @brief Initialise the UART interface.
  *
- * Function what setups the uart hardware and prepares it for transfer.
+ * Function what setups the uart hardware and prepares it for the transfering.
  *
  * @retval 0 on success.
  * @retval negative errno code on failure.
@@ -31,7 +31,7 @@ int doxy_uart_init(void);
 /**
  * @brief Deinitialise the UART interface.
  *
- * Releases uart hardware resources allocated during init
+ * Releases uart hardware resources allocated during init.
  *
  * @retval 0 on success.
  * @retval negative errno code on failure.

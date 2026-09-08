@@ -21,7 +21,7 @@
 /**
  * @brief Initialise the I2C bus.
  *
- * Configures the I2C controller for master mode operation
+ * Configures the I2C controller for master mode operation.
  *
  * @retval 0 on success.
  * @retval negative errno code on failure.
@@ -59,8 +59,8 @@ int doxy_i2c_read(uint8_t addr, uint8_t *dst, size_t len);
  *
  * Attempts to recover the bus by clocking SCL.
  *
- * @return 0 on success.
- * @return negative errno code on failure.
+ * @retval 0 on success.
+ * @retval negative errno code on failure.
  */
 int doxy_i2c_recover(void);
 

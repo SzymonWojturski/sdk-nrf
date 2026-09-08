@@ -23,8 +23,8 @@
  *
  * Configures SPI controller with default settings.
  *
- * @retval 0 on success.
- * @retval negative errno code on failure.
+ * \retval 0 on success.
+ * \retval negative errno code on failure.
  */
 int doxy_spi_init(void);
 
@@ -53,9 +53,10 @@ int doxy_spi_release(void);
 /**
  * @brief Configure SPI bus frequency.
  *
- * @param frequency_hz Desired bus frequency in hertz.
+ * @param [in] frequency_hz Desired bus frequency in hertz.
  *
- * @returns 0 on success, negative errno code on failure.
+ * @retval 0 on success.
+ * @retval negative errno code on failure.
  */
 int doxy_spi_configure(uint32_t frequency_hz);
 

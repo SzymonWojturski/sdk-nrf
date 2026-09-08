@@ -22,7 +22,7 @@ typedef void (*doxy_timer_callback_t)(void);
 /**
  * @brief Start a one-shot timer.
  *
- * @param timeout_ms Timeout duration in milliseconds.
+ * \param timeout_ms Timeout duration in milliseconds.
  *
  * \return 0 on success, negative errno code on failure.
  */
@@ -41,10 +41,12 @@ int doxy_timer_stop(void);
 /**
  * @brief Get remaining time on the active timer.
  *
+ * Reads remaning timer value and stores it in caller buffer
+ *
  * @param [in] remaining_ms Pointer to store remaining milliseconds.
  *
- * @retval 0 on success.
- * @retval negative errno code on failure.
+ * @return 0 on success.
+ * @return negative errno code on failure.
  */
 int doxy_timer_get_remaining(uint32_t *remaining_ms);
 
